@@ -53,3 +53,7 @@
         @apply flex flex-col gap-4 px-[18px] py-6;
     }
 }
+
+.infowindow {
+    @apply bg-blue-900 text-white block text-center h-6 rounded-md px-2 leading-6;
+}
