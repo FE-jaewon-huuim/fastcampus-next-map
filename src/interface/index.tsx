@@ -11,8 +11,8 @@ export interface StoreType {
 }
 
 export interface StoreApiResponse {
-  page: number;
   data: StoreType[];
-  totalCount: number;
-  totalPage: number;
+  totalPage?: number;
+  totalCount?: number;
+  page?: number;
 }
