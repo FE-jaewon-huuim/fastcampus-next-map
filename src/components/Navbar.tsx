@@ -9,7 +9,6 @@ export default function Navbar() {
   const { data, status } = useSession();
   const [isOpen, setIsOpen] = useState(false);
 
-  console.log(data, status);
   return (
     <>
       <div className="navbar">

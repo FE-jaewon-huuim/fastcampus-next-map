@@ -42,7 +42,7 @@ export default function LoginPage() {
           </button>
           <button
             type="button"
-            onClick={() => signIn('kakao')}
+            onClick={() => signIn('kakao')} // 네이버 이메일과 겹쳐서 안됨.
             className="text-black flex gap-2 bg-[#fef01b] hover:bg-[#fef01b]/90 font-medium rounded-lg w-full px-5 py-4 text-center items-center justify-center"
           >
             <RiKakaoTalkFill className="w-6 h-6" />

@@ -1,6 +1,6 @@
 /*global kakao*/
-import Script from "next/script";
-import { Dispatch, SetStateAction } from "react";
+import Script from 'next/script';
+import { Dispatch, SetStateAction } from 'react';
 
 declare global {
   interface Window {
@@ -10,19 +10,24 @@ declare global {
 
 interface MapProps {
   setMap: Dispatch<SetStateAction<any>>;
+  lat?: string | null;
+  lng?: string | null;
+  zoom?: number;
 }
 
 const DEFAULT_LAT = 37.497625203;
 const DEFAULT_LNG = 127.03088379;
 
-export default function Map({ setMap }: MapProps) {
+const DEFAULT_ZOOM = 3;
+
+export default function Map({ setMap, lat, lng, zoom }: MapProps) {
   const loadKakaoMap = () => {
     window.kakao.maps.load(() => {
-      const mapContainer = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
+      const mapContainer = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
       const mapOption = {
         //지도를 생성할 때 필요한 기본 옵션
-        center: new window.kakao.maps.LatLng(DEFAULT_LAT, DEFAULT_LNG), //지도의 중심좌표
-        level: 3, //지도의 레벨(확대, 축소 정도)
+        center: new window.kakao.maps.LatLng(lat ?? DEFAULT_LAT, lng ?? DEFAULT_LNG), //지도의 중심좌표
+        level: zoom ?? DEFAULT_ZOOM, //지도의 레벨(확대, 축소 정도)
       };
       const map = new window.kakao.maps.Map(mapContainer, mapOption);
       setMap(map);
