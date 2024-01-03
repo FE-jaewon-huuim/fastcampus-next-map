@@ -4,6 +4,7 @@ import { StoreApiResponse, StoreType } from '@/interface';
 import { PrismaClient } from '@prisma/client';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<StoreApiResponse | StoreType[]>) {
+  console.log('req.query : ', req.query);
   const { page = '' }: { page?: string } = req.query;
   const prisma = new PrismaClient();
   if (page) {

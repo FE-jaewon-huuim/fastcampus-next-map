@@ -84,7 +84,7 @@ export default function StoreListPage() {
           stores?.pages?.map((page, index) => {
             return (
               <React.Fragment key={index}>
-                {page.data.map((store: StoreType, i) => (
+                {page.data.map((store: StoreType, i: number) => (
                   <li className="flex justify-between gap-x-6 py-5" key={i}>
                     <div className="flex gap-x-4">
                       <Image
