@@ -7,6 +7,7 @@ import { StoreType } from '@/interface';
 import axios from 'axios';
 
 export default function Home({ stores }: { stores: StoreType[] }) {
+  console.log('stores : ', stores);
   const [map, setMap] = useState(null);
   const [currentStore, setCurrentStore] = useState(null);
   return (

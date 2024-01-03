@@ -1,6 +1,7 @@
 import Loader from '@/components/Loader';
 import Loading from '@/components/Loading';
 import Pagenation from '@/components/Pagenation';
+import SearchFilter from '@/components/SearchFilter';
 import useIntersectionObserver from '@/hooks/useIntersectionObserver';
 import { StoreApiResponse, StoreType } from '@/interface';
 import axios from 'axios';
@@ -77,6 +78,7 @@ export default function StoreListPage() {
 
   return (
     <div className="px-4 md:max-w-5xl mx-auto py-8">
+      <SearchFilter />
       <ul role="list" className="divide-y divide-gray-100">
         {isLoading ? (
           <Loading />
