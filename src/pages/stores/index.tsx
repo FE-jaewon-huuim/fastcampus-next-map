@@ -8,7 +8,7 @@ import axios from 'axios';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useInfiniteQuery, useQuery } from 'react-query';
 
 export default function StoreListPage() {
@@ -17,6 +17,9 @@ export default function StoreListPage() {
   const ref = useRef<HTMLDivElement | null>(null);
   const pageRef = useIntersectionObserver(ref, {});
   const isPageEnd = !!pageRef?.isIntersecting;
+  const [q, setQ] = useState<string | null>(null);
+  const [district, setDistrict] = useState<string | null>(null);
+
   console.log('isPageEnd : ', isPageEnd);
 
   // const {
@@ -28,11 +31,17 @@ export default function StoreListPage() {
   //   return data as StoreApiResponse;
   // });
 
+  const searchParams = {
+    q: q,
+    district: district,
+  };
+
   const fetchStores = async ({ pageParam = 1 }) => {
     const { data } = await axios('/api/stores?page=' + pageParam, {
       params: {
         limit: 10,
         page: pageParam,
+        ...searchParams,
       },
     });
     return data;
@@ -46,7 +55,7 @@ export default function StoreListPage() {
     hasNextPage,
     isError,
     isLoading,
-  } = useInfiniteQuery('stores', fetchStores, {
+  } = useInfiniteQuery(['stores', searchParams], fetchStores, {
     getNextPageParam: (lastPage: any) => {
       return lastPage.data?.length > 0 ? lastPage.page + 1 : undefined;
     },
@@ -66,7 +75,6 @@ export default function StoreListPage() {
         fetchNext();
       }, 500);
     }
-
     return () => clearTimeout(timerId);
   }, [fetchNext, fetchNextPage, isPageEnd]);
 
@@ -78,7 +86,7 @@ export default function StoreListPage() {
 
   return (
     <div className="px-4 md:max-w-5xl mx-auto py-8">
-      <SearchFilter />
+      <SearchFilter setQ={setQ} setDistrict={setDistrict} />
       <ul role="list" className="divide-y divide-gray-100">
         {isLoading ? (
           <Loading />

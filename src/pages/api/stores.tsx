@@ -3,18 +3,29 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { StoreApiResponse, StoreType } from '@/interface';
 import { PrismaClient } from '@prisma/client';
 
+interface ResponseType {
+  page?: string;
+  limit?: string;
+  q?: string;
+  district?: string;
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<StoreApiResponse | StoreType[] | StoreType>
 ) {
   console.log('req.query : ', req.query);
-  const { page = '' }: { page?: string } = req.query;
+  const { page = '', limit = '', q, district }: ResponseType = req.query;
   const prisma = new PrismaClient();
   if (page) {
     const count = await prisma.store.count();
     const skipPage = parseInt(page) - 1;
     const stores = await prisma.store.findMany({
       orderBy: [{ id: 'asc' }],
+      where: {
+        name: q ? { contains: q } : {},
+        address: district ? { contains: district } : {},
+      },
       take: 10,
       skip: skipPage * 10,
     });
