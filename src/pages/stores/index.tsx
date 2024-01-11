@@ -1,3 +1,4 @@
+import { searchState } from '@/atom';
 import Loader from '@/components/Loader';
 import Loading from '@/components/Loading';
 import Pagenation from '@/components/Pagenation';
@@ -10,6 +11,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useInfiniteQuery, useQuery } from 'react-query';
+import { useRecoilValue } from 'recoil';
 
 export default function StoreListPage() {
   const router = useRouter();
@@ -17,23 +19,11 @@ export default function StoreListPage() {
   const ref = useRef<HTMLDivElement | null>(null);
   const pageRef = useIntersectionObserver(ref, {});
   const isPageEnd = !!pageRef?.isIntersecting;
-  const [q, setQ] = useState<string | null>(null);
-  const [district, setDistrict] = useState<string | null>(null);
-
-  console.log('isPageEnd : ', isPageEnd);
-
-  // const {
-  //   isLoading,
-  //   isError,
-  //   data: stores,
-  // } = useQuery(`stores-${page}`, async () => {
-  //   const { data } = await axios(`/api/stores?page=${page}`);
-  //   return data as StoreApiResponse;
-  // });
+  const searchValue = useRecoilValue(searchState);
 
   const searchParams = {
-    q: q,
-    district: district,
+    q: searchValue?.q,
+    district: searchValue?.district,
   };
 
   const fetchStores = async ({ pageParam = 1 }) => {
@@ -86,7 +76,7 @@ export default function StoreListPage() {
 
   return (
     <div className="px-4 md:max-w-5xl mx-auto py-8">
-      <SearchFilter setQ={setQ} setDistrict={setDistrict} />
+      <SearchFilter />
       <ul role="list" className="divide-y divide-gray-100">
         {isLoading ? (
           <Loading />
@@ -95,7 +85,11 @@ export default function StoreListPage() {
             return (
               <React.Fragment key={index}>
                 {page.data.map((store: StoreType, i: number) => (
-                  <li className="flex justify-between gap-x-6 py-5" key={i}>
+                  <li
+                    className="flex justify-between gap-x-6 py-5 cursor-pointer hover:bg-gray-50"
+                    key={i}
+                    onClick={() => router.push(`stores/${store.id}`)}
+                  >
                     <div className="flex gap-x-4">
                       <Image
                         src={store?.category ? `/images/markers/${store?.category}.png` : '/images/markers/default.png'}
