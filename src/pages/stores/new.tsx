@@ -1,3 +1,4 @@
+import AddressSearch from '@/components/AddressSearch';
 import { CATEGORY_ARR, FOOD_CERTIFY_ARR, STORE_TYPE_ARR } from '@/data/store';
 import { StoreType } from '@/interface';
 import axios from 'axios';
@@ -95,11 +96,8 @@ export default function StoreNewPage() {
                 )}
               </div>
             </div>
-            {/* <AddressSearch
-            setValue={setValue}
-            register={register}
-            errors={errors}
-          /> */}
+            <AddressSearch setVelue={setValue} register={register} errors={errors} />
+
             <div className="sm:col-span-2 sm:col-start-1">
               <label htmlFor="city" className="block text-sm font-medium leading-6 text-gray-900">
                 식품인증구분
